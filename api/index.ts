@@ -10,10 +10,8 @@ const port = process.env.PORT || 3000;
 server.connection({ port });
 
 (async () => {
-  const connection = await MongoClient.connect(
-    process.env.MONGO_URL || 'mongodb://localhost/heroes',
-  );
-  console.log('mongo db is running');
+  const mongoUrl = `mongodb://${process.env.MONGO_URL || 'localhost'}/heroes`;
+  const connection = await MongoClient.connect(mongoUrl); 
   const db = connection.db('heroes').collection('hero');
   await server.register([
     Inert,
