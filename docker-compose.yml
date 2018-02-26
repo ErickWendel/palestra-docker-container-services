@@ -6,7 +6,7 @@ services:
     ports: 
       - 3000:4000
     environment:  
-      MONGO_URL: mongodb://mongo:27017
+      MONGO_URL: 40.71.204.45
     
     depends_on: 
       - mongo
