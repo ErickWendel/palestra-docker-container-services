@@ -1,22 +1,19 @@
-import * as Hapi from 'hapi';
-import * as Joi from 'joi';
-import { MongoClient } from 'mongodb';
+import * as Hapi from "hapi";
+import * as Joi from "joi";
+import { MongoClient } from "mongodb";
 
-const Inert = require('inert');
-const Vision = require('vision');
-const HapiSwagger = require('hapi-swagger');
+const Inert = require("inert");
+const Vision = require("vision");
+const HapiSwagger = require("hapi-swagger");
 const server = new Hapi.Server();
 const port = process.env.PORT || 3000;
 server.connection({ port });
+console.log("MONGO_URL", process.env.MONGO_URL);
 
 (async () => {
-  const mongoUrl = `mongodb://${process.env.MONGO_URL || 'localhost'}/heroes`;
-<<<<<<< HEAD
+  const mongoUrl = `mongodb://${process.env.MONGO_URL || "localhost"}/heroes`;
   const connection = await MongoClient.connect(mongoUrl);
-=======
-  const connection = await MongoClient.connect(mongoUrl); 
->>>>>>> d56fcd0f03cecf609eed09790d4a6d733100bd36
-  const db = connection.db('heroes').collection('hero');
+  const db = connection.db("heroes").collection("hero");
   await server.register([
     Inert,
     Vision,
@@ -24,65 +21,65 @@ server.connection({ port });
       register: HapiSwagger,
       options: {
         info: {
-          title: 'Node.js with MongoDB Example - Erick Wendel | Nova Versão',
-          version: '1.0',
-        },
-      },
-    },
+          title: "Node.js with MongoDB Example - Erick Wendel | Nova Versão",
+          version: "1.0"
+        }
+      }
+    }
   ]);
 
   server.route([
     {
-      method: 'GET',
-      path: '/heroes',
+      method: "GET",
+      path: "/heroes",
       config: {
         handler: (req: any, reply: any) => {
           return reply(db.find().toArray());
         },
-        description: 'List All heroes',
-        notes: 'heroes from database',
-        tags: ['api'],
-      },
+        description: "List All heroes",
+        notes: "heroes from database",
+        tags: ["api"]
+      }
     },
     {
-      method: 'POST',
-      path: '/heroes',
+      method: "POST",
+      path: "/heroes",
       config: {
         handler: (req, reply) => {
           const { payload } = req;
           return reply(db.insert(payload));
         },
-        description: 'Create a hero',
-        notes: 'create a hero',
-        tags: ['api'],
+        description: "Create a hero",
+        notes: "create a hero",
+        tags: ["api"],
         validate: {
           payload: {
             name: Joi.string().required(),
-            power: Joi.string().required(),
-          },
-        },
-      },
+            power: Joi.string().required()
+          }
+        }
+      }
     },
 
     {
-      method: 'DELETE',
-      path: '/heroes/{id}',
+      method: "DELETE",
+      path: "/heroes/{id}",
       config: {
         handler: (req, reply) => {
           return reply(db.remove({ _id: req.params.id }));
         },
-        description: 'Delete a hero',
-        notes: 'Delete a hero',
-        tags: ['api'],
+        description: "Delete a hero",
+        notes: "Delete a hero",
+        tags: ["api"],
         validate: {
           params: {
-            id: Joi.string().required(),
-          },
-        },
-      },
-    },
+            id: Joi.string().required()
+          }
+        }
+      }
+    }
   ]);
 
   await server.start();
-  console.log('server running at', port);
+  console.log("server running at", port);
 })();
