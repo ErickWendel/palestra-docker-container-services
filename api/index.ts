@@ -11,7 +11,11 @@ server.connection({ port });
 
 (async () => {
   const mongoUrl = `mongodb://${process.env.MONGO_URL || 'localhost'}/heroes`;
+<<<<<<< HEAD
   const connection = await MongoClient.connect(mongoUrl);
+=======
+  const connection = await MongoClient.connect(mongoUrl); 
+>>>>>>> d56fcd0f03cecf609eed09790d4a6d733100bd36
   const db = connection.db('heroes').collection('hero');
   await server.register([
     Inert,
