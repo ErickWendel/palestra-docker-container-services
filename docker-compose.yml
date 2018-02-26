@@ -1,11 +1,11 @@
 version: '2'
 services: 
   api:
-    build: api
+    image: erickwendel/nodejs-with-mongodb-api-example
+    # build: api
     ports: 
       - 3000:4000
-    environment: 
-      PORT: 4000
+    environment:  
       MONGO_URL: mongodb://mongo:27017
     
     depends_on: 
@@ -15,3 +15,14 @@ services:
     image: mongo:3.5
     ports:
       - 27017:2017
+
+  portainer:
+      image: portainer/portainer
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /opt/portainer/data:/data
+      ports:
+        - 5000:9000
+      links:
+        - mongo
+        - api
